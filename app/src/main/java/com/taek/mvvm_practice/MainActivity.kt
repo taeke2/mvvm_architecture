@@ -8,10 +8,10 @@ import androidx.databinding.DataBindingUtil
 import com.taek.mvvm_practice.databinding.ActivityMainBinding
 
 // Controller
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ViewInterface {
     lateinit var binding: ActivityMainBinding
 
-    var model = Model()
+    var presenter = Presenter(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -19,13 +19,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clickNumber(i: Int) {
-        Toast.makeText(this, "$i 번을 클릭했습니다.", Toast.LENGTH_SHORT).show()
-        model.inputPassword(i)
+        presenter.clickNumber(i)
+    }
 
-        if (model.password.size == 4 && model.checkPassword()) {
-            // 4자리 이상 비밀번호가 1234
-            binding.messageSuccess.visibility = View.VISIBLE
-        }
+    override fun toastMessage(i: Int) {
+        Toast.makeText(this, "$i 번을 클릭했습니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun checkPasswordMessage() {
+        binding.messageSuccess.visibility = View.VISIBLE
     }
 
 }
